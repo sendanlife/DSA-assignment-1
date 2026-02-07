@@ -1,6 +1,56 @@
 import math
 import random
 
+# 3T(n/2) + lgn
+
+def recursive(n):
+
+    if n == 0:
+        return 0
+    
+    if n == 1:
+        return 1 + int(math.log2(n))
+    
+    if n == 2:
+        return 2 + int(math.log2(n))
+
+    part1 = n // 2
+    part2 = n // 2
+    part3 = n // 2
+
+    # Recursive calls
+    cost1 = recursive(part1)
+    cost2 = recursive(part2)
+    cost3 = recursive(part3)
+
+    levels = int(math.log2(n))
+
+    total_op = cost1 + cost2 + cost3 + levels
+    return total_op
+
+print("\n=== Algorithm Growth Analysis ===")
+print(f"{'n':>8} | {'Operation Cost':>15}")
+print("-" * 33)
+
+for pow in range(3, 17): 
+
+    n = 2 ** pow
+
+    cost = recursive(n)
+
+    print(f"{n:8d} | {cost:15d}")
+
+    
+
+
+
+
+
+
+
+
+
+#Singapore Context
 
 start = "Toa Payoh"
 
@@ -20,7 +70,6 @@ station_distance = {
     "Kranji": 12
 }
 
-
 # Travel Time Estimator
 
 def estimate_travel_time(stops):
@@ -33,7 +82,7 @@ def estimate_travel_time(stops):
 
     return int(round(time))
 
-# Fare constants
+# Fare Constants
 
 cost_per_stop = 0.30
 cost_per_min = 0.06
@@ -51,42 +100,48 @@ def calculate_fare(destination, travel_time):
 
     return round(fare, 2)
 
-
-# Recursion for Calculation
+#Recursion
 
 def process_logs(logs):
 
     n = len(logs)
 
-    if n == 0:      # Empty case
-        return 0, 0.0, 0
+    # Empty
+    if n == 0:
+        return 0.0, 0
 
-    if n == 1:      # Base case
-        return 1, logs[0]["fare"], 1
+    # Base case
+    if n == 1:
+        return logs[0]["fare"], 1
 
-    if n == 2:      # Two records
+    if n == 2:
         fare = logs[0]["fare"] + logs[1]["fare"]
         cost = 2 + int(math.log2(n))
-        return 2, fare, cost
-    
-    half = n // 2           # Divide into 3 parts
+        return fare, cost
+
+    half = n // 2
 
     part1 = logs[:half]
-    part2 = logs[half:half * 2]
-    part3 = logs[half * 2:]
-    
-    p1, f1, c1 = process_logs(part1)    # Recursive calls
-    p2, f2, c2 = process_logs(part2)
-    p3, f3, c3 = process_logs(part3)
-    
-    merge_cost = int(math.log2(n))  # Merge cost
-    
-    passengers = p1 + p2 + p3
-    fare = f1 + f2 + f3
-    cost = c1 + c2 + c3 + merge_cost    # Combine results
+    part2 = logs[half:]
 
-    return passengers, fare, cost
+    # Overlapping middle part
+    start_index = half // 2
+    end_index = start_index + half
 
+    part3 = logs[start_index:end_index]
+
+    # Recursive calls
+    f1, c1 = process_logs(part1)
+    f2, c2 = process_logs(part2)
+    f3, c3 = process_logs(part3)
+
+    # Merge cost
+    merge_cost = int(math.log2(n))
+
+    total_fare = f1 + f2 + f3
+    total_cost = c1 + c2 + c3 + merge_cost
+
+    return total_fare, total_cost
 
 # Database
 
@@ -118,7 +173,7 @@ def generate_logs(n):
 
         fare = calculate_fare(destination, travel_time)
 
-        # Create record
+
         record = {
             "id": passenger_id,
             "from": start,
@@ -134,19 +189,40 @@ def generate_logs(n):
     return database
 
 
-# Run & Output
+# Growth Table
+
+def run_cost_analysis():
+
+    print("\n=== MRT Fare Algorithm Growth Analysis ===")
+    print(f"{'n':>8} | {'Operation Cost':>15}")
+    print("-" * 33)
+
+    for power in range(3, 17): 
+
+        n = 2 ** power
+
+        logs = generate_logs(n)
+
+        _, cost = process_logs(logs)
+
+        print(f"{n:8d} | {cost:15d}")
+
+
+# Main Run
 
 logs = generate_logs(64)
 
-passengers, total_fare, cost = process_logs(logs)
+total_fare, cost = process_logs(logs)
+
+run_cost_analysis()
 
 print("\n=== Sample Transport Database (First 10 Records) ===")
 
 for record in logs[:10]:
     print(record)
 
+print("\n=== North-South Line Transport Analysis ===")
 
-print("=== North-South Line Transport Analysis ===")
-print("Total Passengers:", passengers)
 print("Total Fare Collected: $", round(total_fare, 2))
 print("Operation Cost:", cost)
+
