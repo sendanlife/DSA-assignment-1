@@ -2,6 +2,17 @@
 
 This repository contains implementations and performance analyses of various Data Structures and Algorithms (DSA) concepts, including custom Linked Lists, the Travelling Salesperson Problem (TSP), Fast Fourier Transform (FFT), Recursion, and Sorting Algorithms.
 
+
+## Group: P5T3
+### Team Members:
+* Charissa Koh Yi En (2501810)
+* Liew Hui Zhong (2502222)
+* Ong Si Kai (2501225)
+* Javier Soh Jie En (2500119)
+* Syafiq Bin Iskandar Abdullah Yeoh (2500818)
+* Clifton Ng Jun Heng (2503193)
+
+
 ## Repository Structure
 
 ### 🔹 Question 1: Data Structures
