@@ -64,5 +64,14 @@ python Q2a-expo.py
 # Run FFT performance analysis
 python Q2a_FFT.py
 
+# Run Recursion & Growth Analysis
+python Q2b_MRT.py
+
 # Run Sorting benchmarks
 python Q3a.py
+
+# Run Selection Sort vs. Merge Sort
+python Q3b1.py
+
+# Run Counting Sort vs. Merge Sort
+python Q3b2.py
